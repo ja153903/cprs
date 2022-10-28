@@ -1,8 +1,10 @@
 mod lp1010_pair_of_songs_total_dur_div_60;
 mod lp1152_analyze_user_website_visit_pattern;
 mod lp11_container_with_most_water;
+mod lp1209_remove_all_adjacent_dups_in_string_ii;
 mod lp146_lru_cache;
 mod lp15_3sum;
+mod lp1762_buildings_with_ocean_view;
 mod lp17_letter_combinations_of_phone_number;
 mod lp200_number_of_islands;
 mod lp215_kth_largest_element_in_array;
