@@ -2,8 +2,9 @@
 
 struct Solution;
 
+// TODO: Solve this at a later time
 impl Solution {
-    pub fn make_integer_beautiful(n: i64, target: i32) -> i64 {
+    pub fn make_integer_beautiful(_n: i64, _target: i32) -> i64 {
         0
     }
 }

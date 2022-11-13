@@ -22,6 +22,7 @@ mod lp54_spiral_matrix;
 mod lp560_subarray_sum_equals_k;
 mod lp56_merge_intervals;
 mod lp5_longest_palindromic_substring;
+mod lp729_my_calendar;
 mod lp79_word_search;
 mod lp7_reverse_integer;
 mod lp811_subdomain_visit_count;
