@@ -15,13 +15,9 @@ fn part1(path: &str) -> io::Result<i32> {
 
             for line in lines {
                 if let Ok(rucksack) = line {
-                    let mut intersection: HashSet<char> = HashSet::new();
                     let mid = rucksack.len() / 2;
                     let (left, right) = rucksack.split_at(mid);
-
-                    for ch in left.chars() {
-                        intersection.insert(ch);
-                    }
+                    let intersection = left.chars().collect::<HashSet<char>>();
 
                     for ch in right.chars() {
                         if intersection.contains(&ch) {
@@ -69,16 +65,8 @@ fn part2(path: &str) -> io::Result<i32> {
 }
 
 fn get_intersection(s: String, t: String) -> String {
-    let mut uniq_s: HashSet<char> = HashSet::new();
-    let mut uniq_t: HashSet<char> = HashSet::new();
-
-    for ch in s.chars() {
-        uniq_s.insert(ch);
-    }
-
-    for ch in t.chars() {
-        uniq_t.insert(ch);
-    }
+    let uniq_s: HashSet<char> = s.chars().collect::<HashSet<char>>();
+    let uniq_t: HashSet<char> = t.chars().collect::<HashSet<char>>();
 
     uniq_s.intersection(&uniq_t).collect::<String>()
 }

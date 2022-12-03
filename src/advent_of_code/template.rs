@@ -1,3 +1,5 @@
+/// This file contains a template for solving all the Advent of Code problems
+/// It has a simple utility to read the input line by line
 #![allow(dead_code)]
 
 use crate::advent_of_code::helpers::file::read_lines;
