@@ -2,58 +2,64 @@
 
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
-use std::fs::File;
-use std::io::{self, BufRead};
+use std::io::{self};
+
+use crate::advent_of_code::helpers::file::read_lines;
 
 fn part1(path: &str) -> io::Result<i32> {
-    let file = File::open(path)?;
-    let lines = io::BufReader::new(file).lines();
-    let mut max_calorie: i32 = 0;
-    let mut current_calorie: i32 = 0;
+    match read_lines(path) {
+        Ok(lines) => {
+            let mut max_calorie: i32 = 0;
+            let mut current_calorie: i32 = 0;
 
-    for line in lines {
-        if let Ok(calorie) = line {
-            if calorie.is_empty() {
-                // reset calorie count
-                current_calorie = 0;
-            } else {
-                current_calorie += calorie.parse::<i32>().unwrap();
+            for line in lines {
+                if let Ok(calorie) = line {
+                    if calorie.is_empty() {
+                        // reset calorie count
+                        current_calorie = 0;
+                    } else {
+                        current_calorie += calorie.parse::<i32>().unwrap();
+                    }
+
+                    max_calorie = max_calorie.max(current_calorie);
+                }
             }
 
-            max_calorie = max_calorie.max(current_calorie);
+            Ok(max_calorie)
         }
+        Err(e) => Err(e),
     }
-
-    Ok(max_calorie)
 }
 
 fn part2(path: &str) -> io::Result<i32> {
-    let mut min_heap: BinaryHeap<Reverse<i32>> = BinaryHeap::new();
-    let mut current_calorie: i32 = 0;
+    match read_lines(path) {
+        Err(e) => Err(e),
+        Ok(lines) => {
+            let mut min_heap: BinaryHeap<Reverse<i32>> = BinaryHeap::new();
+            let mut current_calorie: i32 = 0;
 
-    let file = File::open(path)?;
-    let lines = io::BufReader::new(file).lines();
-
-    for line in lines {
-        if let Ok(calorie) = line {
-            if calorie.is_empty() {
-                min_heap.push(Reverse(current_calorie));
-                if min_heap.len() > 3 {
-                    min_heap.pop();
+            for line in lines {
+                if let Ok(calorie) = line {
+                    if calorie.is_empty() {
+                        min_heap.push(Reverse(current_calorie));
+                        if min_heap.len() > 3 {
+                            min_heap.pop();
+                        }
+                        current_calorie = 0;
+                    } else {
+                        current_calorie += calorie.parse::<i32>().unwrap();
+                    }
                 }
-                current_calorie = 0;
-            } else {
-                current_calorie += calorie.parse::<i32>().unwrap();
             }
+
+            min_heap.push(Reverse(current_calorie));
+            if min_heap.len() > 3 {
+                min_heap.pop();
+            }
+
+            Ok(min_heap.iter().map(|&rev| rev.0).sum())
         }
     }
-
-    min_heap.push(Reverse(current_calorie));
-    if min_heap.len() > 3 {
-        min_heap.pop();
-    }
-
-    Ok(min_heap.iter().map(|&rev| rev.0).sum())
 }
 
 #[cfg(test)]

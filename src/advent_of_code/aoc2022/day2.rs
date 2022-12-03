@@ -1,7 +1,8 @@
 #![allow(dead_code)]
 
-use std::fs::File;
-use std::io::{self, BufRead};
+use std::io::{self};
+
+use crate::advent_of_code::helpers::file::read_lines;
 
 enum Game {
     SCISSORS,
@@ -40,71 +41,76 @@ fn from_game_enum_to_score(game: Game) -> i32 {
 }
 
 fn part1(path: &str) -> io::Result<i32> {
-    let file = File::open(path)?;
-    let lines = io::BufReader::new(file).lines();
-    let mut result: i32 = 0;
+    match read_lines(path) {
+        Err(e) => Err(e),
+        Ok(lines) => {
+            let mut result: i32 = 0;
+            for line in lines {
+                if let Ok(round) = line {
+                    let split = round.split_whitespace();
+                    let parts = split.take(2).collect::<Vec<&str>>();
 
-    for line in lines {
-        if let Ok(round) = line {
-            let split = round.split_whitespace();
-            let parts = split.take(2).collect::<Vec<&str>>();
+                    let enemy_choice = to_game_enum(parts[0]);
+                    let my_choice = to_game_enum(parts[1]);
 
-            let enemy_choice = to_game_enum(parts[0]);
-            let my_choice = to_game_enum(parts[1]);
+                    result += match my_choice {
+                        Game::ROCK => 1,
+                        Game::PAPER => 2,
+                        Game::SCISSORS => 3,
+                    };
 
-            result += match my_choice {
-                Game::ROCK => 1,
-                Game::PAPER => 2,
-                Game::SCISSORS => 3,
-            };
+                    result += match (my_choice, enemy_choice) {
+                        (Game::ROCK, Game::SCISSORS)
+                        | (Game::PAPER, Game::ROCK)
+                        | (Game::SCISSORS, Game::PAPER) => 6,
+                        (Game::ROCK, Game::ROCK)
+                        | (Game::PAPER, Game::PAPER)
+                        | (Game::SCISSORS, Game::SCISSORS) => 3,
+                        _ => 0,
+                    };
+                }
+            }
 
-            result += match (my_choice, enemy_choice) {
-                (Game::ROCK, Game::SCISSORS)
-                | (Game::PAPER, Game::ROCK)
-                | (Game::SCISSORS, Game::PAPER) => 6,
-                (Game::ROCK, Game::ROCK)
-                | (Game::PAPER, Game::PAPER)
-                | (Game::SCISSORS, Game::SCISSORS) => 3,
-                _ => 0,
-            };
+            Ok(result)
         }
     }
-
-    Ok(result)
 }
 
 fn part2(path: &str) -> io::Result<i32> {
-    let file = File::open(path)?;
-    let lines = io::BufReader::new(file).lines();
-    let mut result: i32 = 0;
+    match read_lines(path) {
+        Err(e) => Err(e),
+        Ok(lines) => {
+            let mut result: i32 = 0;
 
-    for line in lines {
-        if let Ok(round) = line {
-            let split = round.split_whitespace();
-            let parts = split.take(2).collect::<Vec<&str>>();
+            for line in lines {
+                if let Ok(round) = line {
+                    let split = round.split_whitespace();
+                    let parts = split.take(2).collect::<Vec<&str>>();
 
-            let enemy_choice = to_game_enum(parts[0]);
-            let decision = to_decision_enum(parts[1]);
+                    let enemy_choice = to_game_enum(parts[0]);
+                    let decision = to_decision_enum(parts[1]);
 
-            result += match decision {
-                Decision::DRAW => 3 + from_game_enum_to_score(enemy_choice),
-                Decision::LOSE => match enemy_choice {
-                    Game::PAPER => from_game_enum_to_score(Game::ROCK),
-                    Game::ROCK => from_game_enum_to_score(Game::SCISSORS),
-                    _ => from_game_enum_to_score(Game::PAPER),
-                },
-                Decision::WIN => {
-                    6 + match enemy_choice {
-                        Game::PAPER => from_game_enum_to_score(Game::SCISSORS),
-                        Game::ROCK => from_game_enum_to_score(Game::PAPER),
-                        _ => from_game_enum_to_score(Game::ROCK),
-                    }
+                    result += match decision {
+                        Decision::DRAW => 3 + from_game_enum_to_score(enemy_choice),
+                        Decision::LOSE => match enemy_choice {
+                            Game::PAPER => from_game_enum_to_score(Game::ROCK),
+                            Game::ROCK => from_game_enum_to_score(Game::SCISSORS),
+                            _ => from_game_enum_to_score(Game::PAPER),
+                        },
+                        Decision::WIN => {
+                            6 + match enemy_choice {
+                                Game::PAPER => from_game_enum_to_score(Game::SCISSORS),
+                                Game::ROCK => from_game_enum_to_score(Game::PAPER),
+                                _ => from_game_enum_to_score(Game::ROCK),
+                            }
+                        }
+                    };
                 }
-            };
+            }
+
+            Ok(result)
         }
     }
-
-    Ok(result)
 }
 
 #[cfg(test)]
