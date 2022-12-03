@@ -69,14 +69,6 @@ fn part2(path: &str) -> io::Result<i32> {
 }
 
 fn get_intersection(s: String, t: String) -> String {
-    if s.is_empty() {
-        return t;
-    }
-
-    if t.is_empty() {
-        return s;
-    }
-
     let mut uniq_s: HashSet<char> = HashSet::new();
     let mut uniq_t: HashSet<char> = HashSet::new();
 
