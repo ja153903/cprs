@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::advent_of_code::helpers::file::read_lines;
-use std::io::{self};
+use std::io;
 
 struct Interval {
     start: i32,
