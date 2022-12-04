@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use crate::advent_of_code::helpers::file::read_lines;
-use std::io::{self};
+use std::io;
 
 fn is_vowel(ch: char) -> bool {
     ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'
