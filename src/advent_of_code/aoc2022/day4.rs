@@ -17,6 +17,7 @@ fn to_interval(interval_str: &str) -> Interval {
     }
 }
 
+/// This function checks if one interval fits entirely within another interval
 fn can_full_merge(a: Interval, b: Interval) -> bool {
     (a.start <= b.start && b.end <= a.end) || (b.start <= a.start && a.end <= b.end)
 }
@@ -45,6 +46,9 @@ fn part1(path: &str) -> io::Result<i32> {
     }
 }
 
+/// This function checks if any part of the interval can fall within the other
+/// Note that here we do the comparison based on the smaller start value as it's easier
+/// to check if the intervals are sorted
 fn can_merge(a: Interval, b: Interval) -> bool {
     if a.start <= b.start {
         b.start <= a.end
