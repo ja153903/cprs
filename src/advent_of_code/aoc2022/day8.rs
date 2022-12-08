@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 
 use crate::advent_of_code::helpers::file::read_lines;
-use std::collections::VecDeque;
 use std::io;
 
 fn part1(path: &str) -> io::Result<i32> {
