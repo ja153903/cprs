@@ -4,8 +4,7 @@ use crate::advent_of_code::helpers::file::read_lines;
 use itertools::Itertools;
 use std::collections::HashMap;
 use std::fs::File;
-use std::io;
-use std::io::{BufReader, Lines};
+use std::io::{self, BufReader, Lines};
 
 fn build_directory(lines: Lines<BufReader<File>>) -> HashMap<String, i64> {
     let mut directory: HashMap<String, i64> = HashMap::new();
