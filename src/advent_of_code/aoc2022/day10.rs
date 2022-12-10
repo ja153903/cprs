@@ -54,6 +54,16 @@ fn part1(path: &str) -> io::Result<i32> {
     }
 }
 
+fn get_lit(cycle: i32, sprite_pos: i32) -> char {
+    let mod40 = cycle % 40;
+
+    if mod40 < sprite_pos || mod40 > sprite_pos + 2 {
+        '.'
+    } else {
+        '#'
+    }
+}
+
 fn part2(path: &str) -> io::Result<String> {
     match read_lines(path) {
         Err(e) => Err(e),
@@ -61,9 +71,6 @@ fn part2(path: &str) -> io::Result<String> {
             let mut cycle: i32 = 0;
             let mut board: Vec<char> = vec![];
             let mut sprite_pos = 1;
-
-            // signal strength = cycle number * register value
-            // keep a hash map of the signal strengths
 
             for line in lines.flatten() {
                 let mut command = line.split_whitespace();
@@ -75,29 +82,16 @@ fn part2(path: &str) -> io::Result<String> {
                                 .expect("Something went wrong parsing the value");
 
                             cycle += 1;
-                            if cycle % 40 < sprite_pos || cycle % 40 > sprite_pos + 2 {
-                                board.push('.');
-                            } else {
-                                board.push('#');
-                            }
+                            board.push(get_lit(cycle, sprite_pos));
 
                             cycle += 1;
-                            if cycle % 40 < sprite_pos || cycle % 40 > sprite_pos + 2 {
-                                board.push('.');
-                            } else {
-                                board.push('#');
-                            }
+                            board.push(get_lit(cycle, sprite_pos));
 
                             sprite_pos += value;
                         }
                     } else {
                         cycle += 1;
-
-                        if cycle % 40 < sprite_pos || cycle % 40 > sprite_pos + 2 {
-                            board.push('.');
-                        } else {
-                            board.push('#');
-                        }
+                        board.push(get_lit(cycle, sprite_pos));
                     }
                 }
             }
