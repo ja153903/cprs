@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use std::collections::HashSet;
-use std::io::{self};
+use std::io;
 
 use itertools::Itertools;
 
